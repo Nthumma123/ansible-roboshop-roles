@@ -1,0 +1,14 @@
+#import role in ansible 
+- name: inclue app setup 
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-setup.yml
+
+
+# load catalogue role
+#ansible finds meta dir and main.yml
+# it depends on common role
+# ansible executes main.yml in common /tasks folder
+# now ansible starts executing tasks in 
+
+  

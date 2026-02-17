@@ -1,0 +1,7 @@
+- name: test call
+  ansible.builtin.debug:
+    msg: "test call from common role"
+
+  #catalogue -- mete -- main.yml --taks -main.yml
+
+  
