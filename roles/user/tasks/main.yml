@@ -20,7 +20,7 @@
     tasks_from: systemd-setup.yml 
 
 - name: copy mongo repo
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: mongodb.repo
     dest: /etc/yum.repos.d/mongodb.repo
 
@@ -28,21 +28,23 @@
   ansible.builtin.dnf:
     name: mongodb-mongosh
     state: present
-    
+
 - name: check products loaded
-  ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
-  register: catalogue_output
+  ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet  --eval 'db.getMongo().getDBNames().indexOf("user")'
+  register: user_output
 
 - name: print the output
   ansible.builtin.debug:
-    msg: "{{ catalogue_output }}"
+    msg: "{{ user_output }}"
 
 - name: load the products
   ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
-  when: catalogue_output.stdout  | int < 0    
-      
-- name: start catalogue
+  when: user_output.stdout  | int < 0  
+
+
+
+- name: start user
   ansible.builtin.service:
-    name: catalogue
+    name: user
     state: restarted
     enabled: yes
